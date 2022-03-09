@@ -12,9 +12,27 @@ function routes(app) {
         }
 
         next()
-    })
+    });
 
-    //route lists
+    //api response
+    app.use(function (req, res, next) {
+        res.jsonSuccess = function (docs) {
+            let url = req.get('host') + req.originalUrl;
+            docs.map(function (doc) {
+                doc.request = {
+                    type: 'GET',
+                    url: url + doc._id
+                }
+            });
+            return res.status(200).json(docs);
+        };
+
+        next();
+    });
+
+    /**
+     **========== Route list ====================
+     */
     app.use('/products', productRoutes);
     app.use('/orders', orderRoutes);
 

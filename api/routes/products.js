@@ -1,21 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../../models/products');
-
-function makeResponse(content, req, hasId) {
-    let url = (req.get('host') + req.originalUrl)
-
-    if (!hasId)
-        url += content.id;
-
-    return {
-        ...content.toObject(),
-        request: {
-            type: 'GET',
-            url: url
-        }
-    }
-}
+const Product = require('../../models/product');
+const { multipleMongooseToObject, mongooseToObject} = require('../../utils/mongoose');
 
 router.get('/', (req, res, next) => {
     Product.find()
@@ -24,12 +10,7 @@ router.get('/', (req, res, next) => {
         .then((docs) => {
             if (!docs) res.status(200).json({ message: 'No Products available.' });
 
-            const response = {
-                count: docs.length,
-                products: docs.map(doc => { return makeResponse(doc, req, false); })
-            };
-
-            res.status(200).json(response);
+            res.jsonSuccess(multipleMongooseToObject(docs));
         })
         .catch(err => {
             next(err)
@@ -39,8 +20,7 @@ router.get('/', (req, res, next) => {
 router.get('/:productId', (req, res, next) => {
     Product.findById(req.params.productId).exec()
         .then((doc) => {
-            if (!doc) res.status(404).json({message: 'Product not found.'});
-
+            if (!doc) return res.status(404).json({message: 'Product not found.'});
             res.json(doc)
         })
         .catch(err => {

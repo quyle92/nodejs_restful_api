@@ -19,6 +19,7 @@ app.use(express.json());
 const routes = require('./api/routes/index');
 routes(app);
 app.use((err, req, res, next) => {
+    console.log(err)
     res.status(err.status || 500);
     res.json({
         error: {
