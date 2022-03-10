@@ -19,6 +19,7 @@
   "homepage": "https://github.com/quyle92/nodejs_restful_api#readme",
   "dependencies": {
     "express": "^4.17.3",
+    "express-validator": "^6.14.0",
     "mongoose": "^6.2.4"
   },
   "devDependencies": {
