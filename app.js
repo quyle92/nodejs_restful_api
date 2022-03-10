@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 //this middleware is to get value for ajax form subumit
 app.use(express.json());
 
-const routes = require('./api/routes/index');
+const routes = require('./api/routes/index.routes');
 routes(app);
 app.use((err, req, res, next) => {
     console.log(err)
