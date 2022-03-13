@@ -1,5 +1,6 @@
 const productRoutes = require('./products.routes');
 const orderRoutes = require('./orders.routes');
+const userRoutes = require('./users.routes');
 const {validationResult } = require('express-validator');
 
 function routes(app) {
@@ -46,6 +47,7 @@ function routes(app) {
      */
     app.use('/products', productRoutes);
     app.use('/orders', orderRoutes);
+    app.use('/users', userRoutes);
     /**
     **============= End Route list=================
     */
