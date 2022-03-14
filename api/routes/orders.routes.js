@@ -7,7 +7,7 @@ const { UpdateOrderDetailValidator } = require('../../validations/updateOrderDet
 const OrderController = require('../../controllers/orderController');
 const OrderService = require('../../services/orderService');
 const res = require('express/lib/response');
-const { param, check, validationResult} = require('express-validator');
+const { param, check, body, validationResult} = require('express-validator');
 
 router.get('/', OrderController.index);
 

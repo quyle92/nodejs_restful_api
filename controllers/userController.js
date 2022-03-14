@@ -18,14 +18,27 @@ class UserController {
 
     async login(req, res, next) {
         try {
-            let user = await User.findOne({ email: req.body.email })
-            if (!user) res.json({ message: 'Auth failed.' });
+            let user = await User.findOne({ email: req.body.email }).exec();
+            if (!user) res.status(401).json({ message: 'Auth failed.' });
 
             let match = await bcrypt.compare(req.body.password, user.password);
-            if(!match) res.json({ message: 'Auth failed.'})
+            if(!match) res.status(401).json({ message: 'Auth failed.'});
+
             if (match) {
-                let token = jwt.sign({ user: user }, 'shhhhh');
-                res.json({ message: 'Login succesfully.' });
+                let token = jwt.sign(
+                    {
+                        email: user.email,
+                        userId: user._id
+                    },
+                    process.env.JWT_KEY,
+                    {
+                        expiresIn: '10h'
+                    }
+                );
+                res.json({
+                    message: 'Login succesfully.',
+                    token: token
+                });
             }
 
         } catch (error) {

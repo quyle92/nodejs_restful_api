@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+require('dotenv').config({ debug: true })
 
 app.use('/images', express.static(path.join(__dirname, 'uploads')))
 
@@ -13,7 +14,6 @@ app.use(morgan('combined', {
 // connecting to mongodb
 const db = require('./config/db');
 db.connect();
-
 
 
 //this middleware is to get value for normal form subumit

@@ -35,8 +35,9 @@ function routes(app) {
             const errors = validationResult(req);
             if (!errors.isEmpty())
                 return res.status(422).json({ errors: errors.array() });
-            //putting next() here  is wrong  as it will jump over to the next top-level middleware (app.use()).
-            next();
+
+            //!! putting next() here  is WRONG  as it will jump over to the next top-level middleware (app.use()).
+            //!! next();
         }
 
         next();
@@ -54,7 +55,6 @@ function routes(app) {
 
     //** Handling route not found error.
     app.use((req, res, next) => {
-        console.log(' Handling route not found exception')
         const error = new Error('Not Found');
         error.status = 400
         next(error)

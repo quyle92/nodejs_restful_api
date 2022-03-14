@@ -5,7 +5,7 @@ const orderService = require('../services/orderService');
 class OrderController {
     async index(req, res, next) {
         try {
-            const docs = await Order.find({}, ['product', 'quantity']).populate('orderDetails.productId', 'name price id');
+            const docs = await Order.find({}, ['product', 'quantity']).populate('orderDetails.productId', 'name price id').exec();
             res.status(200).json(docs)
         } catch (error) {
             next(error)
@@ -14,7 +14,7 @@ class OrderController {
 
     async show(req, res, next) {
         try {
-            const doc = await Order.findById(req.params.orderId, ['product', 'quantity']).populate('orderDetails.productId', 'customer orderDetails');
+            const doc = await Order.findById(req.params.orderId, ['product', 'quantity']).populate('orderDetails.productId', 'customer orderDetails').exec();
             res.status(200).json(doc)
         } catch (error) {
             next(error)
@@ -37,7 +37,7 @@ class OrderController {
                 { _id: req.order._id },
                 { orderDetails: req.orderDetailsUpdated },
                 { returnDocument: 'after' },
-            );
+            ).exec();
             order = order.toObject();
             order.itemNmber = order.orderDetails.length;
             res.status(200).json(order)
